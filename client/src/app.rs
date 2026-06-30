@@ -162,7 +162,32 @@ impl App {
                 max_idx = item.1.idx;
             }
         }
+
+        let internal_clone = result.internal.clone();
+
         result.internal.write().unwrap().current.write().unwrap().0 = CurrentInner::Value(max_idx as u64);
+
+        ehttp::fetch(ehttp::Request::get("/get_idx?from=608400"), move |result| {
+            if let Ok(response) = result && response.status / 100 == 2 && let Some(data) = response.text() {
+                let _ = {
+                    let out: u64 = match serde_json::from_str(data) {
+                        Ok(t)=> {
+                            if let CurrentInner::Value(x) = internal_clone.write().unwrap().current.write().unwrap().0 {
+                                if t > x {
+                                    internal_clone.write().unwrap().current.write().unwrap().0 = CurrentInner::Value(t);
+                                }
+                            }
+                            t
+                        },
+                        Err(e) => {
+                            return;
+                        }
+                    };
+                    console_log!("Set earliest={}", out);
+                };
+            }
+        });
+
         console_log!("Loaded {} item, latest_idx={}", result.history.read().unwrap().len(), max_idx);
         update_feed(cc.egui_ctx.clone(), result.clone());
         result
