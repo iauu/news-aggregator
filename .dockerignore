@@ -44,3 +44,5 @@ config.toml
 */.cargo
 model_data/
 pgdata/
+
+dynamic.yml

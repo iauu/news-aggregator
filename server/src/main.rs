@@ -253,7 +253,7 @@ async fn main() {
             TraceLayer::new_for_http()
                 .make_span_with(DefaultMakeSpan::default().include_headers(true)),
         );
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+    let listener = tokio::net::TcpListener::bind("[::]:3000").await.unwrap();
     tracing::debug!("listening on {}", listener.local_addr().unwrap());
     let _ = axum::serve(
         listener,
