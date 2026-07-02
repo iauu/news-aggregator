@@ -13,7 +13,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.server
-    image: ghcr.io/i-am-unknown-81514525/news-aggregator-server:latest
+    image: ghcr.io/iauu/news-aggregator-server:latest
     environment:
       - RUST_LOG=info
       - POSTGRES_USER=${POSTGRES_USER}
@@ -28,7 +28,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.client
-    image: ghcr.io/i-am-unknown-81514525/news-aggregator-client:latest
+    image: ghcr.io/iauu/news-aggregator-client:latest
     restart: unless-stopped
   database:
     image: pgvector/pgvector:pg18-trixie
