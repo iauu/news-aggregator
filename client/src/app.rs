@@ -167,7 +167,7 @@ impl App {
 
         result.internal.write().unwrap().current.write().unwrap().0 = CurrentInner::Value(max_idx as u64);
 
-        ehttp::fetch(ehttp::Request::get("/api/get_idx?from=608400"), move |result| {
+        ehttp::fetch(ehttp::Request::get("/api/get_idx?t_offset=608400"), move |result| {
             if let Ok(response) = result && response.status / 100 == 2 && let Some(data) = response.text() {
                 let _ = {
                     let out: u64 = match serde_json::from_str(data) {
