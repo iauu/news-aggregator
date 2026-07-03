@@ -172,9 +172,10 @@ impl App {
                 let _ = {
                     let out: u64 = match serde_json::from_str(data) {
                         Ok(t)=> {
-                            if let CurrentInner::Value(x) = internal_clone.write().unwrap().current.write().unwrap().0 {
+                            let v = internal_clone.read().unwrap().current.read().unwrap().0;
+                            if let CurrentInner::Value(x) = v {
                                 if t > x {
-                                    internal_clone.write().unwrap().current.write().unwrap().0 = CurrentInner::Value(t);
+                                    internal_clone.read().unwrap().current.write().unwrap().0 = CurrentInner::Value(t);
                                 }
                             }
                             t
