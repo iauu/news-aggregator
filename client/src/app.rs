@@ -269,8 +269,10 @@ fn update_feed(ctx: egui::Context, app: App) {
                         });
                     }
                     if changed {
-                        let max = rw.read().unwrap().values().max_by_key(|x| x.idx).unwrap().idx;
-                        app_clone.internal.write().unwrap().current.write().unwrap().0 = CurrentInner::Value(max as u64);
+                        let max = rw.read().unwrap().values().max_by_key(|x| x.idx).unwrap().idx as u64;
+                        if let CurrentInner::Value(x) = app_clone.internal.read().unwrap().current.read().unwrap().0 && x < max {
+                            app_clone.internal.write().unwrap().current.write().unwrap().0 = CurrentInner::Value(max);
+                        }
                         ctx.request_repaint();
                     }
                 }
