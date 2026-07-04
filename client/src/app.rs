@@ -1,3 +1,4 @@
+use std::arch::wasm::unreachable;
 use std::collections::VecDeque;
 use std::fs::read;
 use std::panic::resume_unwind;
@@ -269,10 +270,16 @@ fn update_feed(ctx: egui::Context, app: App) {
                             item
                         });
                     }
-                    if changed {
-                        let max = rw.read().unwrap().values().max_by_key(|x| x.idx).unwrap().idx as u64;
-                        if let CurrentInner::Value(x) = app_clone.internal.read().unwrap().current.read().unwrap().0 && x < max {
-                            app_clone.internal.write().unwrap().current.write().unwrap().0 = CurrentInner::Value(max);
+
+                    let fetched_max = rw.read().unwrap().values().max_by_key(|x| x.idx).unwrap().idx as u64;
+                    let new_v = app_clone.internal.read().unwrap().current.read().unwrap().0;
+                    let new_v = match new_v {
+                        CurrentInner::Value(v) => v,
+                        _ => unreachable!()
+                    };
+                    if changed || new_v != v {
+                        if new_v < fetched_max {
+                            app_clone.internal.write().unwrap().current.write().unwrap().0 = CurrentInner::Value(fetched_max);
                         }
                         ctx.request_repaint();
                     }
