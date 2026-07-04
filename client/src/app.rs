@@ -274,7 +274,7 @@ fn update_feed(ctx: egui::Context, app: App) {
                     let new_v = app_clone.internal.read().unwrap().current.read().unwrap().0;
                     let new_v = match new_v {
                         CurrentInner::Value(v) => v,
-                        _ => unreachable!()
+                        _ => v
                     };
                     if changed || new_v != v {
                         if new_v < fetched_max {
