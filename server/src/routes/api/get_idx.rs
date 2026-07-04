@@ -29,7 +29,7 @@ async fn get_idx_handler(
     Query(query): Query<Offset>,
 ) -> Json<i64> {
     let pool = state.lock().await.pool.clone();
-    let result = sqlx::query!("SELECT idx FROM public.unify WHERE time > NOW() - ($1 * INTERVAL '1 second') ORDER BY idx DESC LIMIT 1", query.t_offset as f64)
+    let result = sqlx::query!("SELECT idx FROM public.unify WHERE time > NOW() - ($1 * INTERVAL '1 second') ORDER BY idx ASC LIMIT 1", query.t_offset as f64)
         .fetch_one(&pool).await;
     match result {
         Ok(record) => Json(record.idx),
