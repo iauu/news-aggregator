@@ -1,4 +1,3 @@
-use std::arch::wasm::unreachable;
 use std::collections::VecDeque;
 use std::fs::read;
 use std::panic::resume_unwind;
