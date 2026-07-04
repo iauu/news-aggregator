@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "SELECT idx FROM public.unify WHERE time > NOW() - ($1 * INTERVAL '1 second') ORDER BY idx DESC LIMIT 1",
+  "query": "SELECT idx FROM public.unify WHERE time > NOW() - ($1 * INTERVAL '1 second') ORDER BY idx ASC LIMIT 1",
   "describe": {
     "columns": [
       {
@@ -18,5 +18,5 @@
       false
     ]
   },
-  "hash": "9562a92acac49a8521c82a1443a776f3a5a20982144b7ac8d13eead1ee5d4f82"
+  "hash": "08174ac43dc46d046eb8a3130a7f80ec17995b575fee0af9f39d4008b0303fb1"
 }
